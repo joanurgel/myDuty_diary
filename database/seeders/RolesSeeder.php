@@ -16,9 +16,9 @@ class RolesSeeder extends Seeder
     {
         // Define the roles you want to insert
         $roles = [
-            ['id' => 1, 'name' => 'admin'],
-            ['id' => 2, 'name' => 'supervisor'],
-            ['id' => 3, 'name' => 'trainee'],
+            ['name' => 'admin'],
+            ['name' => 'supervisor'],
+            ['name' => 'trainee'],
         ];
 
         // Insert the roles into the role table
