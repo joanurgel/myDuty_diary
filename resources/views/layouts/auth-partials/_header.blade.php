@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Duty Diary Login</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/icons/diary-icon.ico') }}">
 
     <!-- Custom fonts for this template-->
@@ -20,6 +20,11 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('vendor/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+    <!-- SweetAlert and jQuery imports inside the <head> section -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+
 
 </head>
 

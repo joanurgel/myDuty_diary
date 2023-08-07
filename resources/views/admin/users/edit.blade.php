@@ -17,7 +17,7 @@
                     <div class="form-group col-md-4">
                         <label for="inputRole">Role</label>
                         <select name="role" id="inputRole" class="form-control" required>
-                            <option value="" disabled>Select a Role</option>
+                            <option value="" enabled>Select a Role</option>
                             <option value="1" @if($user->role === 1) selected @endif>Administrator</option>
                             <option value="2" @if($user->role === 2) selected @endif>Supervisor</option>
                             <option value="3" @if($user->role === 3) selected @endif>Trainee</option>
@@ -39,9 +39,35 @@
                 @endif
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-success btn-sm">Update</button>
+                <!-- Add the SweetAlert confirmation on click of the Update button -->
+                <button type="button" onclick="confirmUpdate()" class="btn btn-success btn-sm">Update</button>
                 <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">Cancel</a>
             </div>
         </form>
     </div>
+
+    <!-- SweetAlert and JavaScript Code -->
+    <script>
+        function confirmUpdate() {
+            // Show the SweetAlert confirmation dialog
+            Swal.fire({
+                title: 'Are you sure you want to update?',
+                // text: "You won't be able to revert this!",
+                // icon: 'warning',
+                imageUrl: "{{ asset("assets/icon/dog.jpg") }}",
+                imageHeight: 200,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If the user confirms the update, submit the form
+                    document.querySelector('form').submit();
+                    // You can also use jQuery to submit the form, if jQuery is included in your project
+                    // $('form').submit();
+                }
+            });
+        }
+    </script>
 @endsection
