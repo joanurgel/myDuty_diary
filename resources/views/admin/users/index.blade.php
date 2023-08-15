@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-striped">
+            <table id="users_table" class="table table-sm table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -105,4 +105,5 @@
     </script> 
 
 @include('admin.documentations.partials._script')
+@include('admin.users.partials.datatable_script')
 @endsection

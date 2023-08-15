@@ -46,5 +46,12 @@
 
    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
    {{-- <script src="{{ asset('vendor/js.lightbox.js') }}"></script> --}}
+
+   {{-- datatables --}}
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  
+
+   {{-- TinyMCE --}}
+   {{-- <script src="https://cdn.tiny.cloud/1/f91h8ob9cbvkiqq7t8c04i5g7mpzus8bufl7tdxkfq8cydqj/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> --}}
 </head>
 <body id="page-top">

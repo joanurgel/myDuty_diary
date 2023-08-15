@@ -17,14 +17,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Auth::routes();
+
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::get('/not-authorized', function(){
+    return view('auth.not-authorized');
+})->name('not-authorized');
 
+Route::middleware('checkRouteAccess')->group(function () {
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
 Route::resource('/diaries' , DiariesController::class);
 Route::resource('/documentations' , DocumentationsController::class);
 Route::resource('/approval-requests' , ApprovalRequestsController::class);
 Route::resource('/users', UsersController::class);
+});
