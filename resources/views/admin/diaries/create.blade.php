@@ -56,20 +56,23 @@
         </form>
     </div>
 
-    <!-- SweetAlert and JavaScript Code -->
-    <script>
-        document.getElementById('save-user-btn').addEventListener('click', function() {
-            // Show the SweetAlert success message
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Users Added Succesfully',
-                showConfirmButton: false,
-                timer: 3000
-            });
-            // Submit the form after showing the SweetAlert
-            document.getElementById('create-user-form').submit();
-        });
+   <!-- SweetAlert and JavaScript Code -->
+   <script>
+    document.getElementById('create-diaries-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
         
-    </script>
+        // Show the SweetAlert success message
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Diary Added Successfully',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        // Submit the form after showing the SweetAlert
+        this.submit(); // 'this' refers to the form element itself
+    });
+</script>
+
 @endsection

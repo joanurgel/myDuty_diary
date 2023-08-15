@@ -143,36 +143,4 @@ class UsersController extends Controller
             return response()->json(['error' => 'Deletion failed!']);
         }
     }
-    public function generateDatatables(Request $request)
-{
-    $users = User::query(); // Fetch users using appropriate query
-
-    return DataTables::of($users)
-        ->addIndexColumn()
-        ->addColumn('role', function($user){
-            $role = '';
-            if ($user->role == 1) {
-                $role = '<span class="badge badge-primary">Administrator</span>';
-            } else if ($user->role == 2) {
-                $role = '<span class="badge badge-warning">Supervisor</span>';
-            } else if ($user->role == 3) {
-                $role = '<span class="badge badge-secondary">Trainee</span>';
-            } else {
-                $role = 'Unknown Role';
-            }
-            return $role;
-        })
-        ->addColumn('action', function($user){
-            $actionButtons = '<a href="'.route("users.edit", $user->id).'" class="btn btn-sm btn-warning editUser">
-                                <i class="fas fa-edit"></i>
-                              </a>
-                              <a href="" class="btn btn-sm btn-danger" onclick="confirmDelete('.$user->id.')">
-                                <i class="fas fa-trash"></i>
-                              </a>';
-            return $actionButtons;
-        })
-        ->rawColumns(['action', 'role'])
-        ->make(true);
-}
-
 }

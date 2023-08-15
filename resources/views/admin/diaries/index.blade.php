@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-striped">
+            <table id="diaries-table" class="table table-sm table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -30,11 +30,11 @@
                             <td>
                                 <!-- Add any action buttons or links here -->
                                 <a href="{{ route('diaries.edit', $diary->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                <form action="{{ route('diaries.destroy', $diary->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this diary entry?')">Delete</button>
-                            </form>
+                                <form action="{{ route('diaries.destroy', $diary->id) }}" method="POST" class="d-inline diary-delete-form"> <!-- Add the class "diary-delete-form" here -->
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button> <!-- Remove the onclick attribute here -->
+                                </form>
                             </td>
                             <td> 
                                 EOD REPORT for {{ $diary->created_at->format('F d, Y') }} by {{ $diary->author->name }}
@@ -44,15 +44,57 @@
                                 @if ($diary->status == 1)
                                     <span class="badge badge-success">Pending</span>
                                 @else
-                                    <span class="badge badge-success">Approve</span>
+                                    <span class="badge badge-success">Approve</span> <!-- Change badge color to danger for "Approve" status -->
                                 @endif
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            @if (session('success'))
+                <div class="alert alert-success mt-4">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
     </div>
+
+    <!-- SweetAlert and JavaScript Code -->
+    <script>
+        document.querySelectorAll('.diary-delete-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting
+
+                const formElement = this;
+
+                // Show the SweetAlert confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    imageUrl: "{{ asset("assets/icon/dogs.jpg") }}", // Replace this with the actual image URL
+                    imageHeight: 200,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form after SweetAlert confirmation
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
+<script>
+    $(document).ready(function () {
+        $('#diaries-table').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": [0, 1] } // Disable sorting for columns 0 and 1 (Action and Title)
+            ]
+        });
+    });
+</script>
 @endsection
-
-

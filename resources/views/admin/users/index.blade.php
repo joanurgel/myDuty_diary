@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="users_table" class="table table-sm table-striped">
+            <table id="users-table" class="table table-sm table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -75,7 +75,7 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'No, cancel!',
-                reverseButtons: true
+                reverseButtons: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Send the AJAX request to delete the user
@@ -104,6 +104,15 @@
         }
     </script> 
 
+<script>
+    $(document).ready(function () {
+        $('#users-table').DataTable({
+            "columnDefs": [
+                { "orderable": false, "targets": [0, 1] } // Disable sorting for columns 0 and 1 (Action and Title)
+            ]
+        });
+    });
+</script>
+
 @include('admin.documentations.partials._script')
-@include('admin.users.partials.datatable_script')
 @endsection
