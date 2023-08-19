@@ -45,7 +45,7 @@
    <script src="{{ asset('vendor/js/dropify.min.js') }}"></script>
 
    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
-   {{-- <script src="{{ asset('vendor/js.lightbox.js') }}"></script> --}}
+   
 
    {{-- datatables --}}
    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">

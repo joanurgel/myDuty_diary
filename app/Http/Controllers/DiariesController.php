@@ -76,9 +76,11 @@ class DiariesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
+{
+    $diary = Diary::findOrFail($id);
+    return view('admin.diaries.show', compact('diary'));
+}
+
 
     /**
      * Show the form for editing the specified resource.

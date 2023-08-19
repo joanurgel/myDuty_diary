@@ -12,6 +12,7 @@
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 
+    {{-- lightbox --}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 
     {{-- DataTables --}}
@@ -19,12 +20,19 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     {{-- TinyMCE Script --}}
-    <script>
-        tinymce.init({
+    {{-- <script>
+      tinymce.init({
           selector: 'textarea',
           plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
           toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        });
-      </script>
+          forced_root_block: 'false', // Prevent TinyMCE from adding <p> tags
+          verify_html: false,   // Prevent additional formatting
+          formats: {
+        removeformat: [
+            { selector: '*', remove: 'p' } // Remove <p> tags from all elements
+        ]
+    }
+      });
+  </script> --}}
 </body>
 </html>

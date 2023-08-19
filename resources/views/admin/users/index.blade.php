@@ -1,20 +1,75 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
+<style>
+    /* Define the initial state of the button */
+    .btn {
+      padding: 5px 10px;   
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      /* background-color: #3c34db; */
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Define the hover state */
+    .btn:hover {
+      transform: translateY(-5px);
+      /* background-color: #5247cc; */
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Define the active state */
+    .btn:active {
+      transform: scale(0.95) translateY(2px);
+    }
+    
+    /* Add a pseudo-element for the playful animation */
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #126994, #073b95);
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: bottom left;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    /* Define the hover state for the pseudo-element */
+    .btn:hover::before {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+</style>
+
+    {{-- <div class="card"> --}}
+            {{-- <div class="row">
                 <div class="col-md-6 col-12">
-                    <i class="fas fa-solid fa-users"></i>
-                    Users
-                </div>
-                <div class="col-md-6 col-12 text-right">
+                    <h3 class="mb-2 mb-md-0">
+                        <i class="fas fa-solid fa-users"></i> Users
+                    </h3>
+                </div> --}}
+                {{-- <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <i class="fas fa-solid fa-users"></i>
+                            Users
+                        </div>
+                <div class="col-md-6 col-12 text-md-right mt-3 mt-md-0">
                     <a href="{{ route('users.create') }}" class="btn btn-sm btn-primary">New User</a>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <table id="users-table" class="table table-sm table-striped">
+            <table id="users-table" class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -35,7 +90,7 @@
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if ($user->role == 1)
-                                    <span class="badge badge-danger">Administrator</span>
+                                    <span class="badge badge-primary">Administrator</span>
                                 @elseif ($user->role == 2)
                                     <span class="badge badge-warning">Supervisor</span>
                                 @elseif ($user->role == 3)
@@ -45,8 +100,12 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                <button onclick="confirmDelete({{ $user->id }})" class="btn btn-sm btn-danger">Delete</button>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button onclick="confirmDelete({{ $user->id }})" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -58,8 +117,38 @@
                 </div>
             @endif
         </div>
+    </div> --}}
+    @section('content')
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <i class="fas fa-solid fa-users"></i>
+                    Users
+                </div>
+                {{-- <div class="col-md-6 col-12 text-right">
+                    
+                </div> --}}
+            </div>
+        </div>
+        <div class="card-body p-1">
+            <table class="table table-sm table-hover mb-0" id="users-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Action</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Role</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+        </div>
     </div>
 
+    
     <!-- SweetAlert and JavaScript Code -->
     <script>
         function confirmDelete(userId) {
@@ -104,15 +193,15 @@
         }
     </script> 
 
-<script>
+{{-- <script>
     $(document).ready(function () {
         $('#users-table').DataTable({
             "columnDefs": [
-                { "orderable": false, "targets": [0, 1] } // Disable sorting for columns 0 and 1 (Action and Title)
+                { "orderable": true } // Disable sorting for columns 0 and 1 (Action and Title)
             ]
         });
     });
-</script>
+</script> --}}
 
-@include('admin.documentations.partials._script')
+@include('admin.users.partials.datatable_script')
 @endsection

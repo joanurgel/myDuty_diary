@@ -18,8 +18,14 @@ class UsersController extends Controller
 
         public function index(Request $request)
         {
-            $users = User::all();
-            return view('admin.users.index', compact('users'));
+            // $users = User::all();
+            // return view('admin.users.index', compact('users'));
+            if(request()->ajax())
+        {
+            $users = User::where('id','!=',Auth::user()->id)->get();
+            return $this->generateDatatables($users);
+        };
+        return view('admin.users.index');
         }
     /**
      * Show the form for creating a new resource.
@@ -142,5 +148,33 @@ class UsersController extends Controller
         } else {
             return response()->json(['error' => 'Deletion failed!']);
         }
+    }
+
+    public function generateDatatables($request)
+    {
+        return DataTables::of($request)
+                ->addIndexColumn()
+                ->addColumn('role', function($data){
+                    $role = '';
+                    if($data->role == 1){
+                        $role = '<span class="badge badge-primary">Administrator</span>';
+                    } else if($data->role == 2){
+                        $role = '<span class="badge badge-success">Supervisor</span>';
+                    } else {
+                        $role = '<span class="badge badge-secondary">Trainee</span>';
+                    }
+                    return $role;
+                })
+                ->addColumn('action', function($data){
+                    $actionButtons = '<a href="'.route("users.edit",$data->id).'" data-id="'.$data->id.'" class="btn btn-sm btn-warning editUser">
+                                        <i class="fas fa-edit"></i>
+                                      </a>
+                                      <button data-id="'.$data->id.'" class="btn btn-sm btn-danger" onclick="confirmDelete('.$data->id.')">
+                                        <i class="fas fa-trash"></i>
+                                      </button>';
+                    return $actionButtons;
+                })
+                ->rawColumns(['action','role'])
+                ->make(true);
     }
 }

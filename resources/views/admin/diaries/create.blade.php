@@ -8,10 +8,10 @@
         <form action="{{ route('diaries.store') }}" method="POST" id="create-diaries-form">
             @csrf
             <div class="card-body">
-                <div class="form-group">
-                    <label for="todays-plan">Today's Plan</label>
-                    <textarea class="form-control" id="todays-plan" name="plantoday" rows="3">{{ old('plantoday') }}</textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="todays-plan">Today's Plan</label>
+                        <textarea class="form-control" id="todays-plan" name="plantoday" rows="3">{{ old('plantoday') }}</textarea>
+                    </div>
                 <div class="form-group">
                     <label for="eod">End of Day Report</label>
                     <textarea class="form-control" id="eod" name="eod" rows="3">{{ old('eod') }}</textarea>

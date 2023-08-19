@@ -71,6 +71,45 @@
 <!-- End of Sidebar --> --}}
 
 <!-- Sidebar -->
+<style>
+    /* Style for normal state */
+    .navbar-nav .nav-item .nav-link {
+        color: white;
+        transition: all 0.3s ease; /* Adding smooth transition */
+    }
+
+    /* Style for hover state */
+    .navbar-nav .nav-item .nav-link:hover {
+        color: black;
+        background-color: white;
+        transition: all 0.3s ease; /* Adding smooth transition */
+    }
+
+    /* Style for active state */
+    .navbar-nav .nav-item.active .nav-link {
+        color: black;
+        background-color: white;
+        transition: all 0.3s ease; /* Adding smooth transition */
+    }
+
+    .navbar-nav .nav-item .nav-link i {
+    margin-right: 10px; /* Adding space between icon and text */
+    color: inherit; /* Inherit the text color to match */
+    transition: all 0.3s ease; /* Adding smooth transition */
+}
+/* Style for the icon in normal state */
+.navbar-nav .nav-item .nav-link i {
+    margin-right: 10px; /* Adding space between icon and text */
+    color: inherit; /* Inherit the text color to match */
+    transition: all 0.3s ease; /* Adding smooth transition */
+}
+
+/* Style for the icon on hover state */
+.navbar-nav .nav-item .nav-link:hover i {
+    color: black; /* Change icon color on hover */
+}
+</style>
+
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->

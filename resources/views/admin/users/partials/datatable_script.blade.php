@@ -1,14 +1,21 @@
 <script>
-    $(document).ready(function () {
-        // Initialize DataTable
-        $('#users_table').DataTable({
+    $(document).ready( function () {
+        $('#users-table').DataTable({
+            initComplete: function(){
+                $('.dataTables_filter ').append('<a href="{{ route("users.create") }}" class="btn btn-sm btn-primary ml-3">New User</a>');
+            },
             processing: true,
             serverSide: true,
-            ajax: '{{ route('users.index') }}', // Make sure this route points to your data source
+            ajax: '{{ route('users.index') }}',
             columns: [
                 {
                     data: 'DT_RowIndex',
                     name: 'index'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false
                 },
                 {
                     data: 'name',
@@ -20,26 +27,12 @@
                 },
                 {
                     data: 'role',
-                    name: 'role',
-                    render: function (data) {
-                        if (data === 1) {
-                            return '<span class="badge badge-danger">Administrator</span>';
-                        } else if (data === 2) {
-                            return '<span class="badge badge-warning">Supervisor</span>';
-                        } else if (data === 3) {
-                            return '<span class="badge badge-secondary">Trainee</span>';
-                        } else {
-                            return 'No Role';
-                        }
-                    }
+                    name: 'role'
                 },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false
-                }
+    
             ],
-            "order": [[3, 'asc']]
+            "order": [[ 3, 'asc']]
+    
         });
-    });
-</script>
+    } );
+    </script>
