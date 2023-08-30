@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+
 use App\Models\Diary;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Yajra\DataTables\Facades\DataTables;
+
 class ApprovalRequestsController extends Controller
 {
     /**
@@ -12,28 +16,21 @@ class ApprovalRequestsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-{
-    if (request()->ajax()) {
-        $diaries = []; // Initialize an empty array
+    {
+        // dd(request()->ajax());
+        if(request()->ajax()){
+            // dd(Auth::user()->role_id);
+            if(Auth::user()->role == 1){
+                $diaries = Diary::all();
+                return $this->generateDatatables($diaries);
+            } 
 
-        if (Auth::user()->role_id == 1) {
-            // Fetch all diaries for admin
-            $diaries = Diary::all();
-        } else {
-            // Fetch diaries for supervisors
-            $diaries = Diary::where('status', 0)
-                ->where('supervisor_id', Auth::user()->id)
-                ->get();
-        }
+            $diaries = Diary::where('status','=',0)->where('supervisor_id', Auth::user()->id)->get();
+            return $this->generateDatatables($diaries);
+        };
 
-        return $this->generateDatatables($diaries);
+        return view('admin.approval-requests.index');
     }
-
-    $approvalRequests = Diary::where('status', '=', 0)->where('supervisor_id', Auth::user()->id)->get();
-    
-    return view('admin.approval-requests.index', compact('approvalRequests'));
-}
-
 
     /**
      * Show the form for creating a new resource.
@@ -64,7 +61,45 @@ class ApprovalRequestsController extends Controller
      */
     public function show($id)
     {
-        //
+        $diary = Diary::where('id','=',$id)->first();
+        $user = User::where('id','=',$diary->author_id)->first();
+        $date = $user->created_at->format('M d, Y');
+        $name = $user->name;
+        $sup = User::where('id','=',$diary->supervisor_id)->first();
+        $supervisor = $sup->name;
+        $title = 'EOD Report by ' . $name . ' on ' . $date;
+        $diary_details = [
+            'diary' => $diary,
+            'name' => $name,
+            'title' => $title,
+            'supervisor' => $supervisor
+        ];
+        return view('admin.approval-requests.show')->with('diary',$diary_details);
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function print($id)
+    {
+        $diary = Diary::where('id','=',$id)->first();
+        $user = User::where('id','=',$diary->author_id)->first();
+        $date = $user->created_at->format('M d, Y');
+        $name = $user->name;
+        $sup = User::where('id','=',$diary->supervisor_id)->first();
+        $supervisor = $sup->name;
+        $title = 'EOD Report by ' . $name . ' on ' . $date;
+        $diary_details = [
+            'diary' => $diary,
+            'name' => $name,
+            'title' => $title,
+            'supervisor' => $supervisor
+        ];
+        return view('admin.approval-requests.print')->with('diary',$diary_details);
     }
 
     /**
@@ -91,6 +126,78 @@ class ApprovalRequestsController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approve(Request $request, $id)
+    {
+        $diary = Diary::findOrFail($id);
+            
+        $diary->update([
+            'status' => 1,
+            'supervisor_id' => Auth::user()->id
+        ]);
+
+        if($diary){
+            $title = '';
+            $user = User::where('id','=',$diary->author_id)->first();
+            $date = $user->created_at->format('M d, Y');
+            $name = $user->name;
+            $title = 'EOD Report by ' . $name . ' on ' . $date;
+
+            
+            $trainee = User::where('id','=',$diary->author_id)->first();
+            $supervisor = User::where('id','=',$diary->supervisor_id)->first();
+
+                // $approvedDiary = [
+                //     'trainee' => $trainee->name,
+                //     'supervisor' => $supervisor->name,
+                //     'sup_email' => $supervisor->email,
+                //     'url' => route('approval-requests.show',$diary->id),
+                // ];
+                
+                // Mail::to($user->email)->send(new ApprovedDiary($approvedDiary));      
+                
+                // Notification::route('slack', config('notifications.slack_webhook'))->notify(new DiaryApproved($approvedDiary));
+        }
+
+
+        $successMessage = $title .' has been approved!';
+        return response()->json(['successMessage' => $successMessage]);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reject(Request $request, $id)
+    {
+        $diary = Diary::findOrFail($id);
+            
+        $diary->update([
+            'status' => 2
+        ]);
+
+        if($diary){
+            $title = '';
+            $user = User::where('id','=',$diary->author_id)->first();
+            $date = $user->created_at->format('M d, Y');
+            $name = $user->name;
+            $title = 'EOD Report by ' . $name . ' on ' . $date;
+        }
+        
+        $rejectMessage = $title .' has been rejected!';
+        return response()->json(['rejectMessage' => $rejectMessage]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -98,34 +205,12 @@ class ApprovalRequestsController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $deleteUser = User::findOrFail($id);
+        // dd($deleteUser,$deleteUser->name);
+        $userName = $deleteUser->name;
     }
 
-
-//     public function approve($id)
-// {
-//     // Find the diary by ID
-//     $diary = Diary::findOrFail($id);
-
-//     // Update the approval status to 'approved' (1)
-//     $diary->update(['approval_status' => 1]);
-
-//     // Redirect back with a success message
-//     return redirect()->back()->with('success', 'Diary has been approved.');
-// }
-
-// public function reject($id)
-// {
-//     // Find the diary by ID
-//     $diary = Diary::findOrFail($id);
-
-//     // Update the approval status to 'rejected' (-1)
-//     $diary->update(['approval_status' => -1]);
-
-//     // Redirect back with a success message
-//     return redirect()->back()->with('success', 'Diary has been rejected.');
-// }
-public function generateDatatables($request)
+    public function generateDatatables($request)
     {
         return DataTables::of($request)
                 ->addIndexColumn()
@@ -176,5 +261,4 @@ public function generateDatatables($request)
                 ->rawColumns(['action','role','author','status'])
                 ->make(true);
     }
-
 }

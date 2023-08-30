@@ -1,33 +1,36 @@
+
 <script>
-    $(document).ready(function () {
-        $('#approval-requests-table').DataTable({
+    $(document).ready( function () {
+        $('#approval-requests-DataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('approval-requests.index') }}', // Check this URL
+            ajax: '{{ route('approval-requests.index') }}',
             columns: [
                 {
-                    data: 'DT_RowIndex', // Ensure this matches your JSON structure
+                    data: 'DT_RowIndex',
                     name: 'index'
                 },
                 {
-                    data: 'action', // Ensure this matches your JSON structure
+                    data: 'action',
                     name: 'action',
                     orderable: false
                 },
                 {
-                    data: 'title', // Ensure this matches your JSON structure
+                    data: 'title',
                     name: 'title'
                 },
                 {
-                    data: 'author', // Ensure this matches your JSON structure
+                    data: 'author',
                     name: 'author'
                 },
                 {
-                    data: 'status', // Ensure this matches your JSON structure
+                    data: 'status',
                     name: 'status'
                 },
+    
             ],
-            order: [[4, 'asc']] // Check this column index
+            "order": [[ 4, 'asc']]
+    
         });
-    });
+    } );
 </script>
