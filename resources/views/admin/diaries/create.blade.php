@@ -70,8 +70,10 @@
             timer: 3000
         });
 
-        // Submit the form after showing the SweetAlert
-        this.submit(); // 'this' refers to the form element itself
+        // Delay the form submission by 3 seconds (3000 milliseconds)
+        setTimeout(() => {
+            this.submit(); // Submit the form after a delay
+        }, 3000);
     });
 </script>
 

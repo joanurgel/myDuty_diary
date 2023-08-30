@@ -50,7 +50,7 @@
     }
 </style>
 
-<div class="card">
+{{-- <div class="card">
     <div class="card-header">
         <div class="row">
             <div class="col-md-6 col-12">
@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="card-body">
-        <table id="diaries-table" class="table table-sm table-hover">
+        <table id="diaries-table" class="table table-sm table-hover" id="diaries-table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -96,7 +96,7 @@
                             </form>
                         </td>
                         <td> 
-                            EOD REPORT for {{ now()->format('F d, Y') }} by {{ $diary->author->name }}
+                            EOD REPORT for {{ $diary->created_at->format('F d, Y') }} by {{ $diary->author->name }}
                         </td>                                                      
                         {{-- <td>
                             @if ($diary->status == 1)
@@ -105,7 +105,7 @@
                                 <span class="badge badge-success">Approved</span>
                             @endif
                         </td> --}}
-                        <td>
+                        {{-- <td>
                             @if ($diary->status == 0)
                                 <span class="badge badge-warning">Pending</span>
                             @else
@@ -125,44 +125,39 @@
             </div>
         @endif
     </div>
+</div> --}} 
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <i class="fas fa-solid fa-book-open"></i>
+                Diaries
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        @if (isset($success))
+            <div class="alert alert-success mx-2">
+                {{ $success }}
+            </div>
+        @endif
+        <table class="table table-sm table-hover table-striped" id="diaries-table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Action</th>
+                <th scope="col">Title</th>
+                <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+    </div>
 </div>
+ 
 
-    <!-- SweetAlert and JavaScript Code -->
-    <script>
-        document.querySelectorAll('.diary-delete-form').forEach(form => {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the form from submitting
-
-                const formElement = this;
-
-                // Show the SweetAlert confirmation dialog
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    imageUrl: "{{ asset("assets/icon/dogs.jpg") }}", // Replace this with the actual image URL
-                    imageHeight: 200,
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit the form after SweetAlert confirmation
-                        formElement.submit();
-                    }
-                });
-            });
-        });
-    </script>
-
-<script>
-    $(document).ready(function () {
-        $('#diaries-table').DataTable({
-            "columnDefs": [
-                { "orderable": true } // Disable sorting for columns 0 and 1 (Action and Title)
-            ]
-        });
-    });
-</script>
+@include('admin.diaries.partials.datatable_script')
+@include('admin.diaries.partials.script')
 @endsection

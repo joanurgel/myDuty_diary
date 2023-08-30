@@ -36,7 +36,10 @@ Route::get('/not-authorized', function(){
 Route::middleware('checkRouteAccess')->group(function () {
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
 Route::resource('/diaries' , DiariesController::class);
+Route::get('/print/diaries/{id}',[App\Http\Controllers\DiariesController::class, 'print'])->name('diaries.print');
 Route::resource('/documentations' , DocumentationsController::class);
 Route::resource('/approval-requests' , ApprovalRequestsController::class);
+Route::post('/approval-requests/{id}/approve', [ApprovalRequestsController::class, 'approve'])->name('approval-requests.approve');
+Route::post('/approval-requests/{id}/reject', [ApprovalRequestsController::class, 'reject'])->name('approval-requests.reject');
 Route::resource('/users', UsersController::class);
 });
