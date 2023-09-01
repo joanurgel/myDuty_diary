@@ -154,21 +154,23 @@
     </li>
 
     <!-- Determine user role -->
-    @php
+    {{-- @php
         $userRole = auth()->user()->role; // Assuming you can retrieve the user's role ID
-    @endphp
+    @endphp --}}
 
     <!-- Display items for trainees -->
-    @if ($userRole == 3) <!-- Assuming role_id 3 is for trainees -->
+    {{-- @if ($userRole == 3) <!-- Assuming role_id 3 is for trainees -->
         <!-- Nav Item - APPROVAL (Hidden for trainees) -->
-    @else
+    @else --}}
+    @if(Session::get('USERROLE') == 1 || Session::get('USERROLE') == 2)
         <li class="nav-item {{ request()->is('approval-requests') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('approval-requests.index') }}">
                 <i class="fas fa-solid fa-check-double"></i>
                 <span>Approval Requests</span>
             </a>
         </li>
-
+     @endif
+        @if(Session::get('USERROLE') == 1)
         <!-- Nav Item - USERS (Hidden for trainees) -->
         <li class="nav-item {{ request()->is('users') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('users.index') }}">
@@ -176,6 +178,7 @@
                 <span>Users</span>
             </a>
         </li>
+    {{-- @endif --}}
     @endif
 </ul>
 <!-- End of Sidebar -->
