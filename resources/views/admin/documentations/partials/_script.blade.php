@@ -1,7 +1,7 @@
 
 <script>
     
-    $(document).ready(function() {
+    jQuery(document).ready(function($) {
         
     
         $('#doc_img').dropify({
