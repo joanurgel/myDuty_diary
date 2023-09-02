@@ -22,6 +22,10 @@ class User extends Authenticatable
         'role',
         'email',
         'password',
+        'img',
+        'signature',
+        'isPicComplete',
+        'isSignatureComplete'
     ];
 
     /**

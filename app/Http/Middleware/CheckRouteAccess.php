@@ -54,6 +54,8 @@ class CheckRouteAccess
             'users.destroy',
             'profile.index',
             'profile.update',
+
+            'users.updateProfileName',
         ];
 
         $currentRouteName = $request->route()->getName();
@@ -88,6 +90,10 @@ class CheckRouteAccess
                 'documentations.update',
                 'documentations.destroy',
                 'approval-requests.print',
+                'users.updateProfilePic',
+                'users.updateSignature',
+                'users.updateProfileName',
+                'users.updatePassword'
             ]))) {
                 $allowedRoles = [1, 2, 3];
             } elseif (in_array($currentRouteName, [                    
@@ -101,6 +107,11 @@ class CheckRouteAccess
                     'approval-requests.print',
                     'approval-requests.approve',
                     'approval-requests.reject',
+                    'users.updateProfilePic',
+                    'users.updateSignature',
+                    'users.updateProfileName',
+                    'users.show',
+                    'users.updatePassword'
                 ])) {
                 $allowedRoles = [1, 2];
             } elseif (in_array($currentRouteName,[
@@ -114,6 +125,7 @@ class CheckRouteAccess
                     'approval-requests.print',
                     'approval-requests.approve',
                     'approval-requests.reject',
+                    'users.updatePassword'
             ])) {
                 $allowedRoles = [1];
             }
