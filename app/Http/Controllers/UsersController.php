@@ -121,7 +121,7 @@ class UsersController extends Controller
     $user->name = $request->name;
     $user->email = $request->email;
     $user->role = $request->role;
-    $user->isComplete = 1;
+    $user->isPicComplete = 1;
 
     if ($request->filled('password')) {
         // Update the password if it's provided

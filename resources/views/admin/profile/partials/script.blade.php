@@ -1,23 +1,23 @@
 <script>
     $('#profilePic').dropify({
-        messages: {
-            'default': 'Butangi ug picture!',
-            'replace': 'Elisi kay wa sya care nimo',
-            'remove':  'Buwag na mo!',
-            'error':   'Ooops, mirisi.'
-        },
-        error: {
-            'fileSize': 'Daks ra sya',
-            'minWidth': 'Mao ni ang pinaka juts',
-            'maxWidth': 'Daks ra kaayo',
-            'minHeight': 'Mubo ra pud',
-            'maxHeight': 'Taas ra pud oi',
-            'imageFormat': 'Ingani dapat itsura'
-        },
-    });
+    messages: {
+        'default': 'Insert your picture',
+        'replace': 'Replace the picture',
+        'remove': 'Remove picture',
+        'error': 'Successfully updated'
+    },
+    error: {
+        'fileSize': 'File size is too large',
+        'minWidth': 'Minimum width requirement not met',
+        'maxWidth': 'Exceeds maximum width allowed',
+        'minHeight': 'Minimum height requirement not met',
+        'maxHeight': 'Exceeds maximum height allowed',
+        'imageFormat': 'Invalid image format'
+    },
+});
     $('#signature').dropify({
         messages: {
-            'default': 'Instert your picture!',
+            'default': 'Insert your signature!',
             'replace': 'click to replace your picture!',
             'remove':  'remove picture!',
             'error':   'Ooops, something went wrong!.'

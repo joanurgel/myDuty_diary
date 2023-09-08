@@ -16,6 +16,15 @@
                     <div class="col-9 font-weight-bold">{{ $diary['diary']->created_at->format('m/d/y') }}</div>
                 </div>
             </div>
+            <h5 class="text-uppercase">PLAN TODAY</h5>
+            <ul>
+                @foreach (explode("\n", $diary['diary']->plan_today) as $item)
+                    <li>{!! trim($item, "• ") !!}</li>
+                @endforeach
+            </ul>
+            <hr>
+
+
             <h5 class="text-uppercase">End-of-Day Report</h5>
             <ul>
                 @foreach (explode("\n", $diary['diary']->end_day) as $item)

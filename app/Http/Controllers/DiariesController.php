@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+// use App\Mail\NewDiaryEmail;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewDiaryPosted;
 
 use Illuminate\Http\Request;
 use App\Models\Diary;
 use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Mail;
 class DiariesController extends Controller
 {
     /**
@@ -86,7 +90,22 @@ public function index()
         'supervisor_id' => $request->supervisor,
         'status' => 0
     ]);
+// notifs
+        if($diary){
+            $trainee = User::where('id','=',$diary->author_id)->first();
+            $supervisor = User::where('id','=',$diary->supervisor_id)->first();
+            $diary = [
+                'trainee' => $trainee->name,
+                'supervisor' => $supervisor->name,
+                'sup_email' => $supervisor->email,
+                'url' => route('approval-requests.show',$diary->id),
+            ];
+            
+            // Mail::to($diary['sup_email'])->send(new NewDiaryEmail($diary));
 
+            Notification::route('slack', config('notifications.slack_webhook'))->notify(new NewDiaryPosted($diary));
+        }
+        
     $diaries = Diary::all();
 
     // Fetch the newly created diary with its author and supervisor

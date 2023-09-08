@@ -56,4 +56,26 @@
             </div>
         </form>
     </div>
+
+
+    <!-- SweetAlert and JavaScript Code -->
+   <script>
+    document.getElementById('edit-diaries-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Show the SweetAlert success message
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Diary Updated Successfully', // Modify the message for editing
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            // Delay the form submission by 3 seconds (3000 milliseconds)
+            setTimeout(() => {
+                this.submit(); // Submit the form after a delay
+            }, 3000);
+        });
+</script>
 @endsection

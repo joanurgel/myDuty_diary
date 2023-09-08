@@ -32,7 +32,7 @@
     <script src="https://kit.fontawesome.com/0371f381a6.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <img src="{{ asset('assets/images/cdl-logo.png') }}" alt="CDL Logo" width="30%">
+    <img src="{{ asset('img/cdl.png') }}" alt="CDL Logo" width="30%">
     <div class="card-body">
         @yield('content')
     </div>
