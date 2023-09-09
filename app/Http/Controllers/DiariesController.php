@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 // use App\Mail\NewDiaryEmail;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewDiaryPosted;
-
+use App\Notifications\DiaryApproved;
 use Illuminate\Http\Request;
 use App\Models\Diary;
 use App\Models\User;
@@ -69,51 +69,96 @@ public function index()
      * @return \Illuminate\Http\Response
      */
 
-     public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'plantoday' => 'required',
-        'eod' => 'required',
-        'roadblocks' => 'required',
-        'summary' => 'required',
-        'plantomorrow' => 'required',
-        'supervisor' => 'required'
-    ]);
+//      public function store(Request $request)
+// {
+//     $validatedData = $request->validate([
+//         'plantoday' => 'required',
+//         'eod' => 'required',
+//         'roadblocks' => 'required',
+//         'summary' => 'required',
+//         'plantomorrow' => 'required',
+//         'supervisor' => 'required'
+//     ]);
 
-    $diary = Diary::create([
-        'plan_today' => $request->plantoday,
-        'end_day' => $request->eod,
-        'roadblocks' => $request->roadblocks,
-        'summary' => $request->summary,
-        'plan_tomorrow' => $request->plantomorrow,
-        'author_id' => Auth::user()->id,
-        'supervisor_id' => $request->supervisor,
-        'status' => 0
-    ]);
-// notifs
-        if($diary){
-            $trainee = User::where('id','=',$diary->author_id)->first();
-            $supervisor = User::where('id','=',$diary->supervisor_id)->first();
-            $diary = [
-                'trainee' => $trainee->name,
-                'supervisor' => $supervisor->name,
-                'sup_email' => $supervisor->email,
-                'url' => route('approval-requests.show',$diary->id),
-            ];
+//     $diary = Diary::create([
+//         'plan_today' => $request->plantoday,
+//         'end_day' => $request->eod,
+//         'roadblocks' => $request->roadblocks,
+//         'summary' => $request->summary,
+//         'plan_tomorrow' => $request->plantomorrow,
+//         'author_id' => Auth::user()->id,
+//         'supervisor_id' => $request->supervisor,
+//         'status' => 0
+//     ]);
+// // notifs
+//         if($diary){
+//             $trainee = User::where('id','=',$diary->author_id)->first();
+//             $supervisor = User::where('id','=',$diary->supervisor_id)->first();
+//             $diary = [
+//                 'trainee' => $trainee->name,
+//                 'supervisor' => $supervisor->name,
+//                 'sup_email' => $supervisor->email,
+//                 'url' => route('approval-requests.show',$diary->id),
+//             ];
             
-            // Mail::to($diary['sup_email'])->send(new NewDiaryEmail($diary));
+//             // Mail::to($diary['sup_email'])->send(new NewDiaryEmail($diary));
 
-            Notification::route('slack', config('notifications.slack_webhook'))->notify(new NewDiaryPosted($diary));
-        }
+//             Notification::route('slack', config('notifications.slack_webhook'))->notify(new NewDiaryPosted($diary));
+//         }
         
-    $diaries = Diary::all();
+//     $diaries = Diary::all();
 
-    // Fetch the newly created diary with its author and supervisor
-    $newDiary = Diary::with(['author', 'supervisor'])->find($diary->id);
+//     // Fetch the newly created diary with its author and supervisor
+//     $newDiary = Diary::with(['author', 'supervisor'])->find($diary->id);
 
-    return view('admin.diaries.index', compact('diaries', 'newDiary'));
-}
+//     return view('admin.diaries.index', compact('diaries', 'newDiary'));
+// }
+public function store(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'plantoday' => 'required',
+                'eod' => 'required',
+                'roadblocks' => 'required',
+                'summary' => 'required',
+                'plantomorrow' => 'required',
+                'supervisor' => 'required'
+            ]);
+    
+            $diary = Diary::create([
+                'plan_today' => $request->plantoday,
+            'end_day' => $request->eod,
+            'roadblocks' => $request->roadblocks,
+            'summary' => $request->summary,
+            'plan_tomorrow' => $request->plantomorrow,
+            'author_id' => Auth::user()->id,
+            'supervisor_id' => $request->supervisor,
+            'status' => 0
+            ]);
 
+            if($diary){
+                $trainee = User::where('id','=',$diary->author_id)->first();
+                $supervisor = User::where('id','=',$diary->supervisor_id)->first();
+                $diary = [
+                    'trainee' => $trainee->name,
+                    'supervisor' => $supervisor->name,
+                    'sup_email' => $supervisor->email,
+                    'url' => route('approval-requests.show',$diary->id),
+                ];
+                
+                // Mail::to($diary['sup_email'])->send(new NewDiaryEmail($diary));
+
+                Notification::route('slack', config('notifications.slack_webhook'))->notify(new NewDiaryPosted($diary));
+            }
+    
+            $diaries = Diary::all();
+            
+            return view('admin.diaries.index')->with('diaries',$diaries);
+            // return redirect()->route('success')->with('success', 'Data saved successfully!');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
+    }
 
 
     /**

@@ -41,7 +41,7 @@ class DiaryApproved extends Notification
      */
     public function toSlack($notifiable)
     {
-        $content = 'Hey ' . $this->diary['trainee'] . ', Congrats! Your duty diary has been approved by ' . $this->diary['supervisor'] . '. [' . $this->diary['url'] . ']';
+        $content = 'Yow ' . $this->diary['trainee'] . ', Congrats! Your duty diary has been approved by ' . $this->diary['supervisor'] . '. [' . $this->diary['url'] . ']';
         return (new SlackMessage)->content($content);
     }
 
