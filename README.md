@@ -1,4 +1,4 @@
-<p><a href="#" target="_blank"><img src="https://images.app.goo.gl/cBcxwTZN8DtbKk5S7" width="200"></a></p>
+<p><a href="#" target="_blank"><img src="https://www.rawpixel.com/image/12067264/photo-image-white-background-book" width="200"></a></p>
 
 
 ## Duty Diary
